@@ -1,30 +1,32 @@
-import React from "react";
+import React from 'react'
+import { Pablito } from '../styles/styles'
 
-export default function Header() {
+export default function Header () {
   return (
     <header>
       <div className='header-inner'>
-        <div className='logo'>CHAIR.</div>
+        <div className='logo'>VENTA ONLINE 3D</div>
+        <Pablito>dev by: Pablo Mañas Izquierdo</Pablito>
         <nav>
           <ul>
             <li>
-              <a href='/'>discover</a>
+              <a href='/'>descubre...</a>
             </li>
             <li>
-              <a href='/'>products</a>
+              <a href='/'>productos</a>
             </li>
             <li>
-              <a href='/'>solutions</a>
+              <a href='/'>localización</a>
             </li>
             <li>
-              <a href='/'>reach</a>
+              <a href='/'>contáctanos</a>
             </li>
             <li className='btn'>
-              <a href='/'>order</a>
+              <a href='/'>Comprar</a>
             </li>
           </ul>
         </nav>
       </div>
     </header>
-  );
+  )
 }

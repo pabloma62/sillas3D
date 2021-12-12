@@ -1,24 +1,28 @@
-import React, { useRef, useEffect, useState, Suspense } from "react";
-import "./App.scss";
-//Components
-import Header from "./components/header";
-import { Section } from "./components/section";
+import React, { useRef, useEffect, useState, Suspense } from 'react'
+import './App.scss'
+// Components
+import Header from './components/header'
+import { Section } from './components/section'
+
+// styled-components
+
+import { Span } from './styles/styles'
 
 // Page State
-import state from "./components/state";
+import state from './components/state'
 
 // R3F
-import { Canvas, useFrame } from "react-three-fiber";
-import { Html, useProgress, useGLTFLoader } from "drei";
+import { Canvas, useFrame } from 'react-three-fiber'
+import { Html, useProgress, useGLTFLoader } from 'drei'
 
 // React Spring
-import { a, useTransition } from "@react-spring/web";
-//Intersection Observer
-import { useInView } from "react-intersection-observer";
+import { a, useTransition } from '@react-spring/web'
+// Intersection Observer
+import { useInView } from 'react-intersection-observer'
 
-function Model({ url }) {
-  const gltf = useGLTFLoader(url, true);
-  return <primitive object={gltf.scene} dispose={null} />;
+function Model ({ url }) {
+  const gltf = useGLTFLoader(url, true)
+  return <primitive object={gltf.scene} dispose={null} />
 }
 
 const Lights = () => {
@@ -43,24 +47,24 @@ const Lights = () => {
       {/* Spotlight Large overhead light */}
       <spotLight intensity={1} position={[1000, 0, 0]} castShadow />
     </>
-  );
-};
+  )
+}
 
 const HTMLContent = ({
   domContent,
   children,
   bgColor,
   modelPath,
-  position,
+  position
 }) => {
-  const ref = useRef();
-  useFrame(() => (ref.current.rotation.y += 0.01));
+  const ref = useRef()
+  useFrame(() => (ref.current.rotation.y += 0.01))
   const [refItem, inView] = useInView({
-    threshold: 0,
-  });
+    threshold: 0
+  })
   useEffect(() => {
-    inView && (document.body.style.background = bgColor);
-  }, [inView]);
+    inView && (document.body.style.background = bgColor)
+  }, [bgColor, inView])
   return (
     <Section factor={1.5} offset={1}>
       <group position={[0, position, 0]}>
@@ -74,34 +78,36 @@ const HTMLContent = ({
         </Html>
       </group>
     </Section>
-  );
-};
+  )
+}
 
-function Loader() {
-  const { active, progress } = useProgress();
+function Loader () {
+  const { active, progress } = useProgress()
   const transition = useTransition(active, {
     from: { opacity: 1, progress: 0 },
     leave: { opacity: 0 },
-    update: { progress },
-  });
+    update: { progress }
+  })
   return transition(
     ({ progress, opacity }, active) =>
       active && (
         <a.div className='loading' style={{ opacity }}>
           <div className='loading-bar-container'>
-            <a.div className='loading-bar' style={{ width: progress }}></a.div>
+            <a.div className='loading-bar' style={{ width: progress }} />
           </div>
         </a.div>
       )
-  );
+  )
 }
 
-export default function App() {
-  const [events, setEvents] = useState();
-  const domContent = useRef();
-  const scrollArea = useRef();
-  const onScroll = (e) => (state.top.current = e.target.scrollTop);
-  useEffect(() => void onScroll({ target: scrollArea.current }), []);
+export default function App () {
+  // eslint-disable-next-line
+  const [events, setEvents] = useState()
+  const domContent = useRef()
+  const scrollArea = useRef()
+  const onScroll = (e) => (state.top.current = e.target.scrollTop)
+  // eslint-disable-next-line
+  useEffect(() => void onScroll({ target: scrollArea.current }), [])
 
   return (
     <>
@@ -110,35 +116,35 @@ export default function App() {
       <Canvas
         concurrent
         colorManagement
-        camera={{ position: [0, 0, 120], fov: 70 }}>
+        camera={{ position: [0, 0, 120], fov: 70 }}
+      >
         {/* Lights Component */}
         <Lights />
         <Suspense fallback={null}>
           <HTMLContent
             domContent={domContent}
-            bgColor='#f15946'
+            bgColor='#f1b246'
             modelPath='/armchairYellow.gltf'
-            position={250}>
-            <span>Meet the new </span>
-            <span>shopping experience </span>
-            <span>for online chairs</span>
+            position={250}
+          >
+            <Span>nueva experiencia de compra online. </Span>
+
           </HTMLContent>
           <HTMLContent
             domContent={domContent}
-            bgColor='#571ec1'
+            bgColor='#38c7c7'
             modelPath='/armchairGreen.gltf'
-            position={0}>
-            <span>Shit... we even</span>
-            <span>got different colors</span>
+            position={0}
+          >
+            <Span>Vea sus modelos en 3 dimensiones.</Span>
           </HTMLContent>
           <HTMLContent
             domContent={domContent}
-            bgColor='#636567'
+            bgColor='#d5e0e0'
             modelPath='/armchairGray.gltf'
-            position={-250}>
-            <span>And yes</span>
-            <span>we even got</span>
-            <span>monochrome!</span>
+            position={-250}
+          >
+            <Span>implanta esta web en tu negocio.</Span>
           </HTMLContent>
         </Suspense>
       </Canvas>
@@ -147,10 +153,11 @@ export default function App() {
         className='scrollArea'
         ref={scrollArea}
         onScroll={onScroll}
-        {...events}>
-        <div style={{ position: "sticky", top: 0 }} ref={domContent} />
+        {...events}
+      >
+        <div style={{ position: 'sticky', top: 0 }} ref={domContent} />
         <div style={{ height: `${state.pages * 100}vh` }} />
       </div>
     </>
-  );
+  )
 }
